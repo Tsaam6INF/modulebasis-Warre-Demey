@@ -1,21 +1,25 @@
 const Users = require("./data");
 
-const loginFunction = (username, pass, callback) => {
-  console.log(`gebruikersnaam = > ${username}`);
+const loginFunction = (username, pass, cb) => {
+  // i wordt gebruikt om een foreach te doen die elke user zal overloppen
   let i = 0;
   Users.users.forEach((gebruiker) => {
     if (username == Users.users[i].username) {
       const userId = gebruiker.id;
-      console.log(`id      =>     ${userId}`);
+      // als er een match is zoekt hij het id
       if (pass == gebruiker.wachtwoord) {
-        console.log("suc6vol ingelogd");
+        // als wachtwoord correct is dan zal hij de rechten zoeken en geven aan de hand van het id
+        const userRight = Users.userRights.find(
+          (UserR) => UserR.userid == userId
+        );
+        const recht = Users.rights.find((j) => j.id == userRight.rightid);
+        cb(`${username} recht: ${recht.omschrijving}`);
       } else {
-        console.log("wacthwoord incorrect");
+        cb(`${username} wacthwoord onjuist`);
       }
     }
     i++;
   });
-  callback();
 };
 
 module.exports = {
